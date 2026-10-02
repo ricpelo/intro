@@ -7,46 +7,18 @@
 </head>
 <body>
     <?php
-    function dibujar_tabla(int $numero): void
-    {
-        ?>
-        <table border="1">
-            <thead>
-                <th>n</th>
-                <th>Producto</th>
-            </thead>
-            <tbody>
-                <?php for ($i = 0; $i <= 10; $i++): ?>
-                    <tr>
-                        <td><?= $i ?></td>
-                        <td><?= $numero * $i ?></td>
-                    </tr>
-                <?php endfor ?>
-            </tbody>
-        </table>
-        <?php
-    }
+    require 'auxiliar.php';
 
-    if (isset($_GET["numero"])):
-        $numero = trim($_GET["numero"]);
-        if (ctype_digit($numero)):
-            if ($numero >= 0 && $numero <= 10):
-                dibujar_tabla($numero);
-            else:
-                ?>
-                <h3>Error: el número debe estar entre 0 y 10</h3>
-                <?php
-            endif;
-        else:
-            ?>
-            <h3>Error: el número es incorrecto</h3>
-            <?php
-        endif;
-    else:
-        ?>
-        <h3>Error: falta el parámetro número</h3>
-        <?php
-    endif
+    $errores = [];
+    $numero = obtener_numero($errores);
+    comprobar_numero($numero, $errores);
+    comprobar_rango($numero, $errores);
+
+    if (empty($errores)) {
+        dibujar_tabla($numero);
+    } else {
+        mostrar_errores($errores);
+    }
     ?>
 </body>
 </html>
